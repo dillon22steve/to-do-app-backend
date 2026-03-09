@@ -1,5 +1,8 @@
 package com.to_do.backend.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +42,14 @@ public class UserController {
         System.out.println("Login attempt for username: " + loginRequest.getUsername());
         return userRepository.findByUsername(loginRequest.getUsername())
             .filter(user -> user.getPassword().equals(loginRequest.getPassword()))
-            .map(user -> ResponseEntity.ok("Login successful for: " + user.getUsername()))
-            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password"));
+            .map(user -> {
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "Login successful");
+                response.put("username", user.getUsername());
+                return ResponseEntity.ok(response);
+            })
+            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+            .body(Map.of("message", "Invalid username or password")));
     }
     
 }

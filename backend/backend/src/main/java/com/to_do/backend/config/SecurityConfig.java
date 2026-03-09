@@ -40,7 +40,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable()) // Disable for testing to allow POST
             .httpBasic(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/**").permitAll() // Open the "front door"
+                .requestMatchers("/api/**").permitAll() // Open the "front door"
                 .anyRequest().authenticated()
             );
         return http.build();

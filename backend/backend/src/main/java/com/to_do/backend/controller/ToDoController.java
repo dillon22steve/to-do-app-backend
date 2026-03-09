@@ -27,6 +27,7 @@ public class ToDoController {
 
     @GetMapping
     public List<ToDo> getTasks(Principal principal) {
+        System.out.println("Fetching tasks for user: " + principal.getName());
         // principal.getName() usually returns the username/email
         String username = principal.getName(); 
         return service.getTasksByUsername(username);
