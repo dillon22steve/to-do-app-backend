@@ -35,6 +35,30 @@ public class ToDoService {
         return taskRepository.save(task);
     }
 
+    public ToDo markTaskComplete(String username, Long id) {
+        ToDo task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+        
+        if (!task.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized to update this task");
+        }
+        
+        task.setCompleted(true);
+        return taskRepository.save(task);
+    }
+
+    public ToDo markTaskIncomplete(String username, Long id) {
+        ToDo task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+        
+        if (!task.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized to update this task");
+        }
+        
+        task.setCompleted(false);
+        return taskRepository.save(task);
+    }
+
     // public ToDo updateTask(Long id, ToDo taskDetails) {
     //     ToDo task = taskRepository.findById(id)
     //             .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));

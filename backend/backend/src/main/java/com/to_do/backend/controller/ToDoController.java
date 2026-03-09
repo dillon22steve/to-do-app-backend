@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +39,22 @@ public class ToDoController {
         ToDo createdTask = service.createTask(principal.getName(), task);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
+
+    @PatchMapping("/{id}/complete")
+    public ResponseEntity<ToDo> markTaskComplete(@PathVariable Long id, Principal principal) {
+        System.out.println("Marking task complete for user: " + principal.getName() + " task id: " + id);
+        ToDo updatedTask = service.markTaskComplete(principal.getName(), id);
+        return ResponseEntity.ok(updatedTask);
+    }
+
+    @PatchMapping("/{id}/incomplete")
+    public ResponseEntity<ToDo> markTaskIncomplete(@PathVariable Long id, Principal principal) {
+        System.out.println("Marking task incomplete for user: " + principal.getName() + " task id: " + id);
+        ToDo updatedTask = service.markTaskIncomplete(principal.getName(), id);
+        return ResponseEntity.ok(updatedTask);
+    }
+
+    
 
     // @PutMapping("/{id}")
     // public ResponseEntity<ToDo> updateTask(@PathVariable Long id, @RequestBody ToDo task) {
