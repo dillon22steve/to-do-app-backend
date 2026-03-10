@@ -8,6 +8,8 @@ import com.to_do.backend.model.User;
 import com.to_do.backend.repository.ToDoRepository;
 import com.to_do.backend.repository.UserRepository;
 
+import java.util.Date;
+
 import java.util.List;
 
 @Service
@@ -32,6 +34,9 @@ public class ToDoService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
         task.setUser(user); // Link the task to the found user
+        if (task.getDateCreated() == null) {
+            task.setDateCreated(new Date());
+        }
         return taskRepository.save(task);
     }
 
@@ -57,6 +62,17 @@ public class ToDoService {
         
         task.setCompleted(false);
         return taskRepository.save(task);
+    }
+
+    public void deleteTask(String username, Long id) {
+        ToDo task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+        
+        if (!task.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("Unauthorized to delete this task");
+        }
+        
+        taskRepository.deleteById(id);
     }
 
     // public ToDo updateTask(Long id, ToDo taskDetails) {

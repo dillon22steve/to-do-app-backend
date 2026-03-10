@@ -54,17 +54,11 @@ public class ToDoController {
         return ResponseEntity.ok(updatedTask);
     }
 
-    
-
-    // @PutMapping("/{id}")
-    // public ResponseEntity<ToDo> updateTask(@PathVariable Long id, @RequestBody ToDo task) {
-    //     return ResponseEntity.ok(service.updateTask(id, task));
-    // }
-
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-    //     service.deleteTask(id);
-    //     return ResponseEntity.noContent().build();
-    // }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id, Principal principal) {
+        System.out.println("Deleting task for user: " + principal.getName() + " task id: " + id);
+        service.deleteTask(principal.getName(), id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
